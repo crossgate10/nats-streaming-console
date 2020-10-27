@@ -52,7 +52,7 @@ spec:
   type: NodePort
   ports:
     - port: 8282
-      nodePort: 30390
+      nodePort: your_node_port
       protocol: TCP
       targetPort: 8282
   selector:
