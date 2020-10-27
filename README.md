@@ -1,5 +1,5 @@
 # Notice: this is folk from [here](https://github.com/KualiCo/nats-streaming-console)
-#### the only thing  I do is add deploy.yml & nsc.Dockerfile for deploy to k8s.
+#### the only thing  I do is add deploy.yml & edit nsc.Dockerfile for deploy to k8s.
 ---
 
 # Nats Streaming Console
