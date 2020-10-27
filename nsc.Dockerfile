@@ -1,6 +1,9 @@
 FROM node:8-alpine
 
 ENV CODE /usr/src/app
+ENV STAN_URL="nats://your_domain:your_node_port_map_to_4222"
+ENV STAN_MONITOR_URL="nats://your_domain:your_node_port_map_to_8222"
+ENV STAN_CLUSTER="cluster_name"
 WORKDIR $CODE
 
 RUN mkdir -p $CODE
