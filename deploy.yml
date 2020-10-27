@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: your_registry_name
+  namespace: nats-streaming
+data:
+  .dockerconfigjson: >-
+    your_base64_encode_config_json
+type: kubernetes.io/dockerconfigjson
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nats-streaming-console
+  namespace: nats-streaming
+  labels:
+    cattle.io/creator: norman
+    workload.user.cattle.io/workloadselector: statefulSet-nats-streaming-nats-streaming-console
+spec:
+  serviceName: nats-streaming-console
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: statefulSet-nats-streaming-nats-streaming-console
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: statefulSet-nats-streaming-nats-streaming-console
+    spec:
+      containers:
+        - name: nats-streaming-console
+          image: 'your_docker_image_position'
+          ports:
+            - name: 8282tcp1
+              containerPort: 8282
+              protocol: TCP
+      imagePullSecrets:
+        - name: gcr
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-streaming-console-nodeport
+  namespace: nats-streaming
+  annotations:
+    field.cattle.io/targetWorkloadIds: '["statefulset:nats-streaming:nats-streaming-console"]'
+    workload.cattle.io/targetWorkloadIdNoop: 'true'
+    workload.cattle.io/workloadPortBased: 'true'
+spec:
+  type: NodePort
+  ports:
+    - port: 8282
+      nodePort: 30390
+      protocol: TCP
+      targetPort: 8282
+  selector:
+    workload.user.cattle.io/workloadselector: statefulSet-nats-streaming-nats-streaming-console
