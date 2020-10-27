@@ -1,12 +1,13 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: your_registry_name
-  namespace: nats-streaming
-data:
-  .dockerconfigjson: >-
-    your_base64_encode_config_json
-type: kubernetes.io/dockerconfigjson
+#### Notice: only when image pull from private registrty will you need this secret
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: your_registry_name
+#   namespace: nats-streaming
+# data:
+#   .dockerconfigjson: >-
+#     your_base64_encode_config_json
+# type: kubernetes.io/dockerconfigjson
 
 ---
 apiVersion: apps/v1
@@ -36,7 +37,7 @@ spec:
               containerPort: 8282
               protocol: TCP
       imagePullSecrets:
-        - name: gcr
+        - name: your_registry_name
 
 ---
 apiVersion: v1
